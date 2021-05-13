@@ -2,11 +2,11 @@ import time
 start = time.time() # 각 코드 시작 시 스타트 새로 할당
 import math
 import functools
-
+import numpy as np
 
 def multipleAorB(maxNum, a, b): #! 1
     result = 0
-    for num in range(maxNum + 1):
+    for num in range(0, maxNum):
         if num % a == 0 or num % b == 0: result += num
     return result
 
@@ -135,16 +135,45 @@ elevenInput = '''
 01 70 54 71 83 51 54 69 16 92 33 48 61 43 52 01 89 19 67 48
 '''
 
-# def lagestNumOfFour(input): #! 11
-#     numList = list(map(lambda x: x.split(' '), list(input.split('\n'))))[1:-1]
-#     result = 0
-#     for i in range(0, len(input)):
-#         for j in range(0, len(input[i])):
-#             row = 0; col = 0; slash = 0; reSlash = 0
-#             if input[i][j+3]: row = int(input[i][j]) * int(input[i][j+1]) * int(input[i][j+2]) * int(input[i][j+3])
-#             if input[i+3][j]: col = int(input[i][j]) * int(input[i+1][j]) * int(input[i+2][j]) * int(input[i+3][j])
-#             if input[]
-        
+def lagestNumOfFour(input): #! 11
+    inputList = input.split('\n')
+    del inputList[-1]
+    del inputList[0]
+    for i in range(len(inputList)):
+        inputList[i] = inputList[i].split(' ')
+        for j in range(len(inputList)):
+            inputList[i][j] = int(inputList[i][j])
+    max = 0
+    for i in range(20):
+        for j in range(20):
+            if j + 3 < 20:
+                result = functools.reduce(lambda x, y: x * y, inputList[i][j:j+3])
+                if result > max: max = result
+                result = functools.reduce(lambda x, y: x * y, np.array(inputList).T[i][j:j + 3])
+                if result > max: max = result
+            if i + 3 < 20 and j + 3 < 20:
+                result = inputList[i][j] * inputList[i+1][j+1] * inputList[i+2][j+2] * inputList[i+3][j+3]
+                if result > max: max = result
+            if i + 3 < 20 and j + 4 < 20:
+                result = inputList[i][j+4] * inputList[i+1][j+3] * inputList[i+2][j+2] * inputList[i+3][j+1]
+                if result > max: max = result
+    return max
+
+def triangularNum(): #! 12
+    i = 1 
+    while 1:
+        i = i + 1
+        triNum = 0
+        for a in range(1,i) :
+            triNum = triNum + a
+        r = 0
+        currentNum = 0
+        while r <= triNum ** 0.5:
+            r = r + 1
+            if triNum % r == 0:
+                currentNum = currentNum + 1
+        if currentNum >= 250:
+            return triNum
 
 thirteenInput = """
 37107287533902102798797998220837590246510135740250
@@ -257,7 +286,7 @@ def sumOfFiftyDegitsNums(input): #! 13
     return int(str(result)[0:10])
 
 def longestHailstoneNum(maxNum): #! 14
-    result = 0; i = maxNum
+    result = [0, []]; i = maxNum
     while i > maxNum / 2:
         num = i
         hailstone = []
@@ -265,9 +294,11 @@ def longestHailstoneNum(maxNum): #! 14
             hailstone.append(num)
             if num % 2 == 0: num = num / 2
             elif num % 2 != 0 and num != 1: num = num * 3 + 1
-        if result < len(hailstone): result = i
+        if len(result[1]) < len(hailstone): 
+            result[0] = i
+            result[1] = hailstone
         i -= 1
-    return result
+    return result[0]
 
 def countPathOfTable(w): #! 15
     def grid(w, h):
@@ -277,11 +308,9 @@ def countPathOfTable(w): #! 15
         else: return grid(w, h - 1) + grid(h, w - 1)
     i = 0; result = 0
     while i <= w:
-        print(i)
         result += grid(i, w - i) ** 2
         i += 1
     return result
-
 
 def sumOfPowersOfTwo(powers): #! 16
     power = list(str(2**powers))
@@ -306,7 +335,43 @@ def countEnglishChar(): #! 17
         result2 += len(num_dict[i] + 'hundred' 'and')*99 + result1
     return result1 + result2
 
-def countSunday():
+eighteenInput = '''
+75
+95 64
+17 47 82
+18 35 87 10
+20 04 82 47 65
+19 01 23 75 03 34
+88 02 77 73 07 63 67
+99 65 04 28 06 16 70 92
+41 41 26 56 83 40 80 70 33
+41 48 72 33 47 32 37 16 94 29
+53 71 44 65 25 43 91 52 97 51 14
+70 11 33 28 77 73 17 78 39 68 17 57
+91 71 52 38 17 14 91 43 58 50 27 29 48
+63 66 04 68 89 53 67 30 73 16 69 87 40 31
+04 62 98 27 23 09 70 98 73 93 38 53 60 04 23
+'''
+
+def findLagestPath(input): #! 18
+    def compareNum(a,b):
+        if a > b:
+            return a
+        else:
+            return b
+    tree = []
+    for i in input.strip().splitlines():
+        tree.append([int(i) for i in i.split()])
+    result = []
+    for i, j in enumerate(tree[-2::-1]):
+        for j, k in enumerate(j):
+            a = tree[::-1][i][j] + tree[::-1][i+1][j]
+            b = tree[::-1][i][j+1] + tree[::-1][i+1][j]
+            tree[::-1][i+1][j] = compareNum(a,b)
+            result.append(compareNum(a,b))
+    return max(result)
+
+def countSunday(): #! 19
     totalDays = 0; result = 0
     days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
     for y in range(1900, 2001):
@@ -325,38 +390,42 @@ def sumOfFactorialChars(num): #! 20
     
 
 
-# print("#1", multipleAorB(1000, 3, 5), "time: ", (time.time() - start))
-# start = time.time()
-# print("#2", sumEvenFibonacci(4000000), "time: ", (time.time() - start))
-# start = time.time()
-# print("#3", lagestPrimeNumber(6008514), "time: ", (time.time() - start))
-# start = time.time()
-# print("#4", lagestPalindrome(), "time: ", (time.time() - start))
-# start = time.time()
-# print("#5", leastCommonMultiple(20), "time: ", (time.time() - start))
-# start = time.time()
-# print("#6", squaredSumSubtractSumOfSquare(100), "time: ", (time.time() - start))
-# start = time.time()
-# print("#7", primeNumOfOrder(10001), "time: ", (time.time() - start))
-# start = time.time()
-# print("#8", lagestMultipleOfFiveNum(eightInput), "time: ", (time.time() - start))
-# start = time.time()
-# print("#9", getPythagorasNum(1000), "time: ", (time.time() - start))
-# start = time.time()
-# print("#10", sumOfPrimeNums(2000000), "time: ", (time.time() - start))
-# start = time.time()
-# print("#11", lagestNumOfFour(elevenInput), "time: ", (time.time() - start))
-# start = time.time()
-# print("#13", sumOfFiftyDegitsNums(thirteenInput), "time: ", (time.time() - start))
-# start = time.time()
-# print("#14", longestHailstoneNum(1000000), "time: ", (time.time() - start))
-# start = time.time()
+print("#1", multipleAorB(1000, 3, 5), "time: ", (time.time() - start))
+start = time.time()
+print("#2", sumEvenFibonacci(4000000), "time: ", (time.time() - start))
+start = time.time()
+print("#3", lagestPrimeNumber(600851475143), "time: ", (time.time() - start))
+start = time.time()
+print("#4", lagestPalindrome(), "time: ", (time.time() - start))
+start = time.time()
+print("#5", leastCommonMultiple(20), "time: ", (time.time() - start))
+start = time.time()
+print("#6", squaredSumSubtractSumOfSquare(100), "time: ", (time.time() - start))
+start = time.time()
+print("#7", primeNumOfOrder(10001), "time: ", (time.time() - start))
+start = time.time()
+print("#8", lagestMultipleOfFiveNum(eightInput), "time: ", (time.time() - start))
+start = time.time()
+print("#9", getPythagorasNum(1000), "time: ", (time.time() - start))
+start = time.time()
+print("#10", sumOfPrimeNums(2000000), "time: ", (time.time() - start))
+start = time.time()
+print("#11", lagestNumOfFour(elevenInput), "time: ", (time.time() - start))
+start = time.time()
+print("#12", triangularNum(), "time: ", (time.time() - start))
+start = time.time()
+print("#13", sumOfFiftyDegitsNums(thirteenInput), "time: ", (time.time() - start))
+start = time.time()
+print("#14", longestHailstoneNum(1000000), "time: ", (time.time() - start))
+start = time.time()
 print("#15", countPathOfTable(20), "time: ", (time.time() - start))
 start = time.time()
-# print("#16", sumOfPowersOfTwo(1000), "time: ", (time.time() - start))
-# start = time.time()
-# print("#17", countEnglishChar(), "time: ", (time.time() - start))
+print("#16", sumOfPowersOfTwo(1000), "time: ", (time.time() - start))
 start = time.time()
-print("#20", countSunday(), "time: ", (time.time() - start))
-# start = time.time()
-# print("#20", sumOfFactorialChars(100), "time: ", (time.time() - start))
+print("#17", countEnglishChar(), "time: ", (time.time() - start))
+start = time.time()
+print("#18", findLagestPath(eighteenInput), "time: ", (time.time() - start))
+start = time.time()
+print("#19", countSunday(), "time: ", (time.time() - start))
+start = time.time()
+print("#20", sumOfFactorialChars(100), "time: ", (time.time() - start))

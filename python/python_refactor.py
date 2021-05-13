@@ -269,6 +269,20 @@ def longestHailstoneNum(maxNum): #! 14
         i -= 1
     return result
 
+def countPathOfTable(w): #! 15
+    def grid(w, h):
+        if w == 0 or h == 0: return 1
+        elif w == 1: return h + 1
+        elif h == 1: return w + 1
+        else: return grid(w, h - 1) + grid(h, w - 1)
+    i = 0; result = 0
+    while i <= w:
+        print(i)
+        result += grid(i, w - i) ** 2
+        i += 1
+    return result
+
+
 def sumOfPowersOfTwo(powers): #! 16
     power = list(str(2**powers))
     return functools.reduce(lambda a, b : int(a) + int(b), power)
@@ -292,8 +306,21 @@ def countEnglishChar(): #! 17
         result2 += len(num_dict[i] + 'hundred' 'and')*99 + result1
     return result1 + result2
 
+def countSunday():
+    totalDays = 0; result = 0
+    days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+    for y in range(1900, 2001):
+        for m in range(0, 12):
+            day = days[m]
+            if y % 4 == 0 and m == 1: day += 1
+            for d in range(0, day):
+                if y > 1900 and d == 0 and totalDays % 7 == 6: result += 1
+                totalDays += 1
+    return result
+
 def sumOfFactorialChars(num): #! 20
     return sum(map(int, str(math.factorial(num))))
+
     
     
 
@@ -317,15 +344,19 @@ def sumOfFactorialChars(num): #! 20
 # print("#9", getPythagorasNum(1000), "time: ", (time.time() - start))
 # start = time.time()
 # print("#10", sumOfPrimeNums(2000000), "time: ", (time.time() - start))
-start = time.time()
-print("#11", lagestNumOfFour(elevenInput), "time: ", (time.time() - start))
+# start = time.time()
+# print("#11", lagestNumOfFour(elevenInput), "time: ", (time.time() - start))
 # start = time.time()
 # print("#13", sumOfFiftyDegitsNums(thirteenInput), "time: ", (time.time() - start))
 # start = time.time()
 # print("#14", longestHailstoneNum(1000000), "time: ", (time.time() - start))
 # start = time.time()
+print("#15", countPathOfTable(20), "time: ", (time.time() - start))
+start = time.time()
 # print("#16", sumOfPowersOfTwo(1000), "time: ", (time.time() - start))
 # start = time.time()
 # print("#17", countEnglishChar(), "time: ", (time.time() - start))
+start = time.time()
+print("#20", countSunday(), "time: ", (time.time() - start))
 # start = time.time()
 # print("#20", sumOfFactorialChars(100), "time: ", (time.time() - start))

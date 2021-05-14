@@ -691,22 +691,20 @@
       else if (width === 1) return height + 1;
       else if (height === 1) return width + 1;
       else return grid(width, height - 1) + grid(height, width - 1);
-    }
+    };
     let i = 0;
     let result = 0;
     while (i <= width) {
-      result += Math.pow(grid(i, width - i), 2)
-      i += 1
+      result += Math.pow(grid(i, width - i), 2);
+      i += 1;
     }
-    return result
-  }
+    return result;
+  };
   console.log(`15번: ${countPathOfTable(20)}`);
 
   // 16
   const sumTwoToThePowerOfOneThousandChar = () => {
-    let twoToThePowerOfOneThousand: string = BigInt(
-      Math.pow(2, 1000)
-    ).toString();
+    let twoToThePowerOfOneThousand: string = BigInt(Math.pow(2, 1000)).toString();
     let result: number = 0;
     for (let i = 0; i < twoToThePowerOfOneThousand.length; i++) {
       result = result + Number(twoToThePowerOfOneThousand[i]);
@@ -740,16 +738,7 @@
       "nineteen",
     ];
 
-    let twoDigits = [
-      "twenty",
-      "thirty",
-      "forty",
-      "fifty",
-      "sixty",
-      "seventy",
-      "eighty",
-      "ninety",
-    ];
+    let twoDigits = ["twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"];
 
     if (num === 1000) {
       return "onethousand";
@@ -795,71 +784,21 @@
     ["41", "48", "72", "33", "47", "32", "37", "16", "94", "29"],
     ["53", "71", "44", "65", "25", "43", "91", "52", "97", "51", "14"],
     ["70", "11", "33", "28", "77", "73", "17", "78", "39", "68", "17", "57"],
-    [
-      "91",
-      "71",
-      "52",
-      "38",
-      "17",
-      "14",
-      "91",
-      "43",
-      "58",
-      "50",
-      "27",
-      "29",
-      "48",
-    ],
-    [
-      "63",
-      "66",
-      "04",
-      "68",
-      "89",
-      "53",
-      "67",
-      "30",
-      "73",
-      "16",
-      "69",
-      "87",
-      "40",
-      "31",
-    ],
-    [
-      "04",
-      "62",
-      "98",
-      "27",
-      "23",
-      "09",
-      "70",
-      "98",
-      "73",
-      "93",
-      "38",
-      "53",
-      "60",
-      "04",
-      "23",
-    ],
+    ["91", "71", "52", "38", "17", "14", "91", "43", "58", "50", "27", "29", "48"],
+    ["63", "66", "04", "68", "89", "53", "67", "30", "73", "16", "69", "87", "40", "31"],
+    ["04", "62", "98", "27", "23", "09", "70", "98", "73", "93", "38", "53", "60", "04", "23"],
   ];
 
   let sumOfBiggestPass = 0;
 
-  const biggestSumPass = (
-    inputArr: Array<Array<string>>,
-    accArr?: Array<string>
-  ): number => {
+  const biggestSumPass = (inputArr: Array<Array<string>>, accArr?: Array<string>): number => {
     let passes: Array<string> = [];
     if (accArr) {
       passes = accArr;
     }
     passes.push(inputArr[0][0]);
     for (let i = 1; i < inputArr.length; i++) {
-      let previousNumberIdx: number = inputArr[i - 1].indexOf(
-        passes[passes.length - 1]
-      );
+      let previousNumberIdx: number = inputArr[i - 1].indexOf(passes[passes.length - 1]);
       let prev = inputArr[i][previousNumberIdx];
       let next = inputArr[i][previousNumberIdx + 1] || "0";
       if (Number(prev) > Number(next)) {
@@ -868,9 +807,7 @@
         passes.push(next);
       }
     }
-    let sumOfPass = passes
-      .map((el) => Number(el))
-      .reduce((acc, val) => acc + val);
+    let sumOfPass = passes.map((el) => Number(el)).reduce((acc, val) => acc + val);
     if (sumOfBiggestPass < sumOfPass) {
       sumOfBiggestPass = sumOfPass;
     }
@@ -884,21 +821,21 @@
 
   // 19
   const countSunday = (): number => {
-      let totalDays: number = 0;
-      let result: number = 0;
-      const days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-      for(let y = 1900; y < 2001; y ++) {
-        for(let m = 0; m < 12; m ++) {
-          let day = days[m];
-          if(y % 4 === 0 && m === 1) day += 1;
-          for(let d = 0; d < day; d ++) {
-            if(y > 1900 && d === 0 && totalDays % 7 === 6) result += 1;
-            totalDays += 1;
-          }
+    let totalDays: number = 0;
+    let result: number = 0;
+    const days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    for (let y = 1900; y < 2001; y++) {
+      for (let m = 0; m < 12; m++) {
+        let day = days[m];
+        if (y % 4 === 0 && m === 1) day += 1;
+        for (let d = 0; d < day; d++) {
+          if (y > 1900 && d === 0 && totalDays % 7 === 6) result += 1;
+          totalDays += 1;
         }
       }
-      return result;
-  }
+    }
+    return result;
+  };
   console.log(`19번: ${countSunday()}`);
 
   // 20

@@ -1,14 +1,15 @@
+import numpy as np
 import time
 start = time.time() # 각 코드 시작 시 스타트 새로 할당
 import math
 import functools
-import numpy as np
 
 def multipleAorB(maxNum, a, b): #! 1
     result = 0
     for num in range(0, maxNum):
         if num % a == 0 or num % b == 0: result += num
     return result
+#* 1 ~ maxNum 을 순회하며 2와 3의 공배수의 합을 반환
 
 def sumEvenFibonacci(num): #! 2
     result = 0
@@ -18,6 +19,7 @@ def sumEvenFibonacci(num): #! 2
         if lists[-1] + lists[-2] > num: break
         lists.append(lists[-1] + lists[-2])
     return result
+#* 리스트에 피보나치 수열을 담아가며 짝수들의 합을 반환
 
 def lagestPrimeNumber(num): #! 3
     cntNum = 1
@@ -27,6 +29,7 @@ def lagestPrimeNumber(num): #! 3
             if num == cntNum: break
             else: num /= cntNum
     return int(num)
+#* 1 ~ num 을 순회하며 카운트가 num의 소인수인지 판단, 참일 시 num / 2 하여 재반복
 
 def lagestPalindrome(): #! 4
     result = 0
@@ -35,6 +38,7 @@ def lagestPalindrome(): #! 4
             num = str(i * j)
             if num == num[::-1] and result < int(num): result = int(num)
     return result
+#* 세자리수 수를 2중 loop 돌며 가장 큰 대칭수를 반환
 
 def leastCommonMultiple(maxNum): #! 5
     result = 1
@@ -45,6 +49,7 @@ def leastCommonMultiple(maxNum): #! 5
                     result *= j
                     break
     return result
+#! 2 ~ maxNum을 순회하며,  
 
 def squaredSumSubtractSumOfSquare(maxNum): #! 6
     resultA = 0; resultB = 0
@@ -52,6 +57,7 @@ def squaredSumSubtractSumOfSquare(maxNum): #! 6
         resultA += i
         resultB += i * i
     return (resultA ** 2) - resultB
+#* 1~100까지의 제곱의 합과 합의 제곱의 차를 반환
 
 def primeNumOfOrder(order): #! 7
     primeNums = [2]; num = 3
@@ -61,6 +67,7 @@ def primeNumOfOrder(order): #! 7
             if i == num - 1: primeNums.append(num)
         num += 1
     return primeNums[-1]
+#* 10001번째 소수까지 리스트에 저장 후, 10001번째 요소를 반환
 
 eightInput = """
 73167176531330624919225119674426574742355349194934
@@ -95,13 +102,16 @@ def lagestMultipleOfFiveNum(inputNum): #! 8
         if result < multipleOfNums: result = multipleOfNums
         multipleOfNums = 1
     return result
+#* 1000자리 수를 한줄로 펼친 후, 5개의 숫자들의 곱을 구하여, result에 비교 할당 후 반환 
 
 def getPythagorasNum(sumOfPythas): #! 9
     for a in range(2, sumOfPythas -1):
-        for b in range(a+1, sumOfPythas-a):
+        for b in range(a + 1, sumOfPythas-a):
             if sumOfPythas - (a + b) > b:
                 c = sumOfPythas - (a + b)
-                if c**2 == a**2 + b**2: return a*b*c
+                if c ** 2 == a ** 2 + b ** 2: return a * b * c
+#* 수 a 와 b 를 1000까지 순회시키며 1000에서 a + b의 합을 뺀 값이 b보다 클 때
+#* a2 + b2 = c2를 만족하면 a * b * c 반환
 
 def sumOfPrimeNums(maxNum): #! 10
     a = [False, False] + [True] * (maxNum - 1)
@@ -111,6 +121,9 @@ def sumOfPrimeNums(maxNum): #! 10
             result += i
             for j in range(2 * i, maxNum + 1, i): a[j] = False
     return result
+#* 에라토스테네스의 체 공식. True로 이루어진 리스트를 생성한 후,
+#* 122번째 줄에서, i(int)로 나누어지는 인덱스의 True를 False로 바꿔주면
+#* result에는 True번째의 인덱스만 더하면 소수의 합을 구할 수 있다.
 
 elevenInput = '''
 08 02 22 97 38 15 00 40 00 75 04 05 07 78 52 12 50 77 91 08
@@ -144,20 +157,21 @@ def lagestNumOfFour(input): #! 11
         for j in range(len(inputList)):
             inputList[i][j] = int(inputList[i][j])
     max = 0
-    for i in range(20):
-        for j in range(20):
-            if j + 3 < 20:
+    for i in range(len(inputList)):
+        for j in range(len(inputList)):
+            if j + 3 < len(inputList):
                 result = functools.reduce(lambda x, y: x * y, inputList[i][j:j+3])
                 if result > max: max = result
                 result = functools.reduce(lambda x, y: x * y, np.array(inputList).T[i][j:j + 3])
                 if result > max: max = result
-            if i + 3 < 20 and j + 3 < 20:
+            if i + 3 < len(inputList) and j + 3 < len(inputList):
                 result = inputList[i][j] * inputList[i+1][j+1] * inputList[i+2][j+2] * inputList[i+3][j+3]
                 if result > max: max = result
-            if i + 3 < 20 and j + 4 < 20:
+            if i + 3 < len(inputList) and j + 4 < len(inputList):
                 result = inputList[i][j+4] * inputList[i+1][j+3] * inputList[i+2][j+2] * inputList[i+3][j+1]
                 if result > max: max = result
     return max
+#* 문자열을 2중첩 리스트화 시킨 후, 가로 세로 대각 역대각 연속 4개의 합을 구하여 max 에 할당.
 
 def triangularNum(): #! 12
     i = 1 
@@ -174,6 +188,7 @@ def triangularNum(): #! 12
                 currentNum = currentNum + 1
         if currentNum >= 250:
             return triNum
+#* 
 
 thirteenInput = """
 37107287533902102798797998220837590246510135740250
@@ -284,6 +299,7 @@ def sumOfFiftyDegitsNums(input): #! 13
     for i in input:
         result += int(i)
     return int(str(result)[0:10])
+#* 50자리 수를 모두 더한 후, 앞의 10자리를 반환
 
 def longestHailstoneNum(maxNum): #! 14
     result = [0, []]; i = maxNum
@@ -299,6 +315,7 @@ def longestHailstoneNum(maxNum): #! 14
             result[1] = hailstone
         i -= 1
     return result[0]
+#* 입력값의 범위내의 우박수를 모두 구한 후, result에 그 우박수가 무엇인지와, 과정들을 담아, 최종적으로 남은 우박수를 반환
 
 def countPathOfTable(w): #! 15
     def grid(w, h):
@@ -311,10 +328,12 @@ def countPathOfTable(w): #! 15
         result += grid(i, w - i) ** 2
         i += 1
     return result
+#* 
 
 def sumOfPowersOfTwo(powers): #! 16
     power = list(str(2**powers))
     return functools.reduce(lambda a, b : int(a) + int(b), power)
+#* 2의 powers승의 값의 자리수를 모두 더해 반환
 
 def countEnglishChar(): #! 17
     num_dict = {1: 'one', 2: 'two', 3: 'three', 4: 'four', 5: 'five', 6: 'six', 7: 'seven', 8: 'eight',
@@ -334,6 +353,7 @@ def countEnglishChar(): #! 17
         result2 += len(num_dict[i] + 'hundred')
         result2 += len(num_dict[i] + 'hundred' 'and')*99 + result1
     return result1 + result2
+#* 딕셔너리 타입에 담긴 문자를 바탕으로 해당하는 문자들의 길이 총 합을 반환
 
 eighteenInput = '''
 75
@@ -370,6 +390,7 @@ def findLagestPath(input): #! 18
             tree[::-1][i+1][j] = compareNum(a,b)
             result.append(compareNum(a,b))
     return max(result)
+#* 각 경로의 높은 수를 판별해 result에 담은 후 max를 이용해 가장 높은 수를 반환
 
 def countSunday(): #! 19
     totalDays = 0; result = 0
@@ -382,9 +403,12 @@ def countSunday(): #! 19
                 if y > 1900 and d == 0 and totalDays % 7 == 6: result += 1
                 totalDays += 1
     return result
+#* 각 월에 해당하는 일수를 리스트에 담아놓은 후, loop를 통해 윤년을 계산해 1901 ~ 2000 의 모든 day를 더해, 7로 나눈
+#* 수를 반환 === 일요일
 
 def sumOfFactorialChars(num): #! 20
     return sum(map(int, str(math.factorial(num))))
+#* 100 factorial을 계산하여 해당 결과값의 자리수를 모두 더해 반환
 
     
     

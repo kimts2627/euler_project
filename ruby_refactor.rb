@@ -145,24 +145,25 @@ def getPythagorasNum(sumOfPythas) #! 9
     end
 end
 
-# def sumOfPrimeNums(maxNum) #! 10
-#     a = [false, false] + [true] * (maxNum - 1)
-#     result = 0
-#     for i in 2..maxNum + 1
-#         if a[i]
-#             result += i
-#             for j in 2 * i..maxNum + 1
-#                 a[j] = false
-#                 j = j + (i - 1)
-#                 puts(j)
-#             end
-#         end
-#     end
-#     return result
-# end
+def sumOfPrimeNums(maxNum) #! 10
+    sum = 0
+    2.upto(2000000){|n|
+        c = 0
+        for k in 1..(Math.sqrt(n))
+          if n % k === 0 && k != 1
+            c = 1
+            break
+          end
+        end
+      
+        if c === 0
+          sum += n
+        end
+    }
+    p sum
+end
 
-elevenInput = '''
-08 02 22 97 38 15 00 40 00 75 04 05 07 78 52 12 50 77 91 08
+elevenInput = '''08 02 22 97 38 15 00 40 00 75 04 05 07 78 52 12 50 77 91 08
 49 49 99 40 17 81 18 57 60 87 17 40 98 43 69 48 04 56 62 00
 81 49 31 73 55 79 14 29 93 71 40 67 53 88 30 03 49 13 36 65
 52 70 95 23 04 60 11 42 69 24 68 56 01 32 56 71 37 02 36 91
@@ -181,32 +182,48 @@ elevenInput = '''
 04 42 16 73 38 25 39 11 24 94 72 18 08 46 29 32 40 62 76 36
 20 69 36 41 72 30 23 88 34 62 99 69 82 67 59 85 74 04 36 16
 20 73 35 29 78 31 90 01 74 31 49 71 48 86 81 16 23 57 05 54
-01 70 54 71 83 51 54 69 16 92 33 48 61 43 52 01 89 19 67 48
-'''
+01 70 54 71 83 51 54 69 16 92 33 48 61 43 52 01 89 19 67 48'''
 
-# def lagestNumOfFour(input): #! 11
-#     inputList = input.split('\n')
-#     del inputList[-1]
-#     del inputList[0]
-#     for i in range(len(inputList)):
-#         inputList[i] = inputList[i].split(' ')
-#         for j in range(len(inputList)):
-#             inputList[i][j] = int(inputList[i][j])
-#     max = 0
-#     for i in range(len(inputList)):
-#         for j in range(len(inputList)):
-#             if j + 3 < len(inputList):
-#                 result = functools.reduce(lambda x, y: x * y, inputList[i][j:j+3])
-#                 if result > max: max = result
-#                 result = functools.reduce(lambda x, y: x * y, np.array(inputList).T[i][j:j + 3])
-#                 if result > max: max = result
-#             if i + 3 < len(inputList) and j + 3 < len(inputList):
-#                 result = inputList[i][j] * inputList[i+1][j+1] * inputList[i+2][j+2] * inputList[i+3][j+3]
-#                 if result > max: max = result
-#             if i + 3 < len(inputList) and j + 4 < len(inputList):
-#                 result = inputList[i][j+4] * inputList[i+1][j+3] * inputList[i+2][j+2] * inputList[i+3][j+1]
-#                 if result > max: max = result
-#     return max
+
+def lagestNumOfFour(input) #! 11
+    inputList = input.split("\n")
+    for i in 0..inputList.length - 1
+        inputList[i] = inputList[i].split(' ')
+        for j in 0..inputList[i].length - 1
+            inputList[i][j] = inputList[i][j].to_i
+        end
+    end
+    max = 1
+    for i in 0..inputList.length - 1
+        for j in 0..inputList.length - 1
+            if j + 3 < inputList.length
+                result = inputList[i][j..j+3].reduce{|x, y| x * y}
+                if result > max
+                    max = result
+                end
+            end
+            if i + 3 < inputList.length - 1
+                result = inputList[i][j] * inputList[i+1][j] * inputList[i+2][j] * inputList[i+3][j]
+                if result > max
+                    max = result
+                end
+            end
+            if i + 3 < inputList.length && j + 3 < inputList.length
+                result = inputList[i][j] * inputList[i+1][j+1] * inputList[i+2][j+2] * inputList[i+3][j+3]
+                if result > max
+                    max = result
+                end
+            end
+            if i + 3 < inputList.length && j + 4 < inputList.length
+                result = inputList[i][j+4] * inputList[i+1][j+3] * inputList[i+2][j+2] * inputList[i+3][j+1]
+                if result > max
+                    max = result
+                end
+            end
+        end
+    end
+    return max
+end
 
 def triangularNum() #! 12
     i = 1 
@@ -388,8 +405,105 @@ end
 
 def sumOfPowersOfTwo(powers) #! 16
     power = (2 ** powers).to_s.split('')
-    puts(power)
     return power.reduce{|a, b| a.to_i + b.to_i}
+end
+
+def countEnglishChar() #! 17
+    num_hash = {
+        1 => 'one', 2 => 'two', 3 => 'three', 4 => 'four', 5 => 'five', 6 => 'six', 7 => 'seven', 8 => 'eight',
+        9 => 'nine', 10 => 'ten', 11 => 'eleven', 12 => 'twelve', 13 => 'thirteen', 14 => 'fourteen',
+        15 => 'fifteen', 16 => 'sixteen', 17 => 'seventeen', 18 => 'eighteen', 19 => 'nineteen',
+        20 => 'twenty', 30 => 'thirty', 40 => 'forty', 50 => 'fifty', 60 => 'sixty', 70 => 'seventy',
+        80 => 'eighty', 90 => 'ninety', 100 => '', 0 => '', 1000 => 'thousand'
+    }
+    result1 = 0
+    for i in 1..20
+        result1 += (num_hash[i]).length
+    end
+    for i in 21..99
+        ten = (i / 10).floor * 10
+        one = i - ten
+        result1 += (num_hash[ten] + num_hash[one]).length
+    end
+    result2 = 11
+    for i in 1..9
+        result2 += (num_hash[i] + 'hundred').length
+        result2 += (num_hash[i] + 'hundred' 'and').length * 99 + result1
+    end
+    return result1 + result2
+end
+
+eighteenInput = '''
+75
+95 64
+17 47 82
+18 35 87 10
+20 04 82 47 65
+19 01 23 75 03 34
+88 02 77 73 07 63 67
+99 65 04 28 06 16 70 92
+41 41 26 56 83 40 80 70 33
+41 48 72 33 47 32 37 16 94 29
+53 71 44 65 25 43 91 52 97 51 14
+70 11 33 28 77 73 17 78 39 68 17 57
+91 71 52 38 17 14 91 43 58 50 27 29 48
+63 66 04 68 89 53 67 30 73 16 69 87 40 31
+04 62 98 27 23 09 70 98 73 93 38 53 60 04 23
+'''
+eighteenInput = eighteenInput.split("\n")[1..eighteenInput.length - 1]
+for i in 0..eighteenInput.length - 1
+    eighteenInput[i] = eighteenInput[i].split(' ')
+    for j in 0..eighteenInput[i].length
+        eighteenInput[i][j] = eighteenInput[i][j].to_i
+    end
+end
+
+def findLagestPath(input, length) #! 18
+    if input.length === 1
+        return input[0].max
+      else
+        rowLast = input[length]
+        rowBefore = input[length - 1]
+        for x in 0..(rowLast.length - 2)
+        if rowLast[x] >= rowLast[x+1]
+            rowBefore[x] = rowLast[x] + rowBefore[x]
+        else
+            rowBefore[x] = rowLast[x + 1] + rowBefore[x]
+        end
+        input[length - 1][x] = rowBefore[x]
+        end
+        input.pop
+        findLagestPath(input, length - 1)
+    end
+end
+
+def countSunday() #! 19
+    totalDays = 0
+    result = 0
+    days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+    for y in 1900..2000
+        for m in 0..11
+            day = days[m]
+            if y % 4 == 0 && m == 1
+                day += 1
+            end
+            for d in 0..day - 1
+                if y > 1900 && d == 0 && totalDays % 7 == 6
+                    result += 1
+                end
+                totalDays += 1
+            end
+        end
+    end
+    return result
+end
+
+def sumOfFactorialChars(num) #! 20
+    factorial = 1
+    for i in 1..num
+        factorial *= i
+    end
+    return factorial.to_s.split('').reduce{|a, b| a.to_i + b.to_i}
 end
 
 start = Time.now
@@ -402,14 +516,14 @@ start = Time.now
 # puts("#7 -> #{primeNumOfOrder(10001)} duration: #{Time.now - start}")
 # puts("#8 -> #{lagestMultipleOfFiveNum(eightInput)} duration: #{Time.now - start}")
 # puts("#9 -> #{getPythagorasNum(1000)} duration: #{Time.now - start}")
-# puts("#10 -> #{sumOfPrimeNums(20)} duration: #{Time.now - start}")
-# puts("#11 -> #{sumOfPrimeNums(2000000)} duration: #{Time.now - start}")
+# puts("#10 -> #{sumOfPrimeNums(2000000)} duration: #{Time.now - start}")
+# puts("#11 -> #{lagestNumOfFour(elevenInput)} duration: #{Time.now - start}")
 # puts("#12 -> #{triangularNum()} duration: #{Time.now - start}")
 # puts("#13 -> #{sumOfFiftyDegitsNums(thirteenInput)} duration: #{Time.now - start}")
 # puts("#14 -> #{longestHailstoneNum(1000000)} duration: #{Time.now - start}")
 # puts("#15 -> #{countPathOfTable(20)} duration: #{Time.now - start}")
-puts("#16 -> #{sumOfPowersOfTwo(1000)} duration: #{Time.now - start}")
-# puts("#17 -> #{triangularNum()} duration: #{Time.now - start}")
-# puts("#18 -> #{triangularNum()} duration: #{Time.now - start}")
-# puts("#19 -> #{triangularNum()} duration: #{Time.now - start}")
-# puts("#20 -> #{triangularNum()} duration: #{Time.now - start}")
+# puts("#16 -> #{sumOfPowersOfTwo(1000)} duration: #{Time.now - start}")
+# puts("#17 -> #{countEnglishChar()} duration: #{Time.now - start}")
+puts("#18 -> #{findLagestPath(eighteenInput, 14)} duration: #{Time.now - start}")
+# puts("#19 -> #{countSunday()} duration: #{Time.now - start}")
+# puts("#20 -> #{sumOfFactorialChars(100)} duration: #{Time.now - start}")
